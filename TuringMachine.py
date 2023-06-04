@@ -1,3 +1,5 @@
+# Lembrar da palavra "" (lambda)
+
 import json
 import sys ## Ler linha de comando
 
@@ -51,7 +53,8 @@ def separar_elementos():
     estados_lista = mt[1]
     alfabeto_entrada = mt[2]
 
-    alfabeto_fita = mt[3][(2 + len(alfabeto_entrada)):]
+    # +2 porque tira o 'x' e o 'y' que pegamos em mt[4] e mt[5] e que não fazem parte do alfabeto da fita
+    alfabeto_fita = mt[3][(2 + len(alfabeto_entrada)):] 
 
     simbolo_inicio = mt[4]
     simbolo_vazio = mt[5]
@@ -115,6 +118,29 @@ def verificar_trilhas():
     for trilha in trilhas:
         print(trilha)
 
+def checar_transicao(estado : int, cabecote : int) -> list: # Caso retorne lista vazia, não há transição. Caso contrário, retorna transicao
+    global transicoes
+    # TODO:
+
+def executar_maquina() -> bool: # Retornar se a palavra faz parte da linguagem ou não
+    global estados
+    global estado_inicial
+
+    global transicoes
+    
+    global trilhas
+
+    global alfabeto_entrada
+    global alfabeto_fita
+
+    global simbolo_inicio
+    global simbolo_vazio
+
+    cabecote = 1 # Começa no índice 1 (Um depois do símbolo de início)
+    estado_atual = estado_inicial
+
+    # TODO: Enquanto há transição...
+
 
 argumentos = sys.argv ## Primeiro argumento é o nome do programa python3
 
@@ -130,14 +156,20 @@ mt = ler_maquina_turing(nome_arquivo)['mt']
 separar_elementos()
 atribuir_numero_estado()
 
-verificar_estados()
+# verificar_estados()
 print()
 
 colocar_transicoes_hash()
-verificar_transicoes()
-print()
+# verificar_transicoes()
+# print()
 
 fazer_trilhas()
-verificar_trilhas()
+# verificar_trilhas()
 
 
+# resposta = executar_maquina()
+
+# if resposta:
+#     print("Sim")
+# else:
+#     print("Não")
