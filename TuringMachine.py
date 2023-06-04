@@ -5,6 +5,7 @@ import sys ## Ler linha de comando
 ## Variáveis globais
 mt = {}
 
+trilhas = []
 qnt_trilhas = 0
 
 estados = {} ## chave : (id, isFinal) // Tupla
@@ -20,6 +21,8 @@ simbolo_vazio = ""
 
 transicoes = {}
 transicoes_lista = []
+
+palavra = ""
 
 
 def ler_maquina_turing(nome_arquivo : str) -> dict:
@@ -91,7 +94,27 @@ def colocar_transicoes_hash(): ## Colocando as transições em Hash com a chave 
 def verificar_transicoes(): ## Teste para verificar se está armazenando de forma correta
     for chave in transicoes:
         for valor in transicoes[chave]:
-            print(f'Chave: {chave}: {valor}')
+            print(f'Estado {chave}: {valor}')
+        print()
+        
+def fazer_trilhas():
+    global palavra
+    global trilhas
+
+    palavra_lista = list(palavra) ## Lista de caracteres da palavra de entrada
+    palavra_lista.insert(0, simbolo_inicio) ## Coloca o símbolo de ínicio no primeiro índice
+
+    trilhas.append(palavra_lista)
+
+    if qnt_trilhas > 1:
+        trilha_branco = [simbolo_vazio for _ in range(len(palavra_lista))]
+
+        trilhas.extend(trilha_branco for _ in range(qnt_trilhas - 1))
+     
+def verificar_trilhas():
+    for trilha in trilhas:
+        print(trilha)
+
 
 argumentos = sys.argv ## Primeiro argumento é o nome do programa python3
 
@@ -112,5 +135,9 @@ print()
 
 colocar_transicoes_hash()
 verificar_transicoes()
+print()
+
+fazer_trilhas()
+verificar_trilhas()
 
 
