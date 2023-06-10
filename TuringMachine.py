@@ -33,10 +33,10 @@ def ler_maquina_turing(nome_arquivo : str) -> dict:
             return json.load(file)
     except FileNotFoundError:
         print(f'Arquivo {nome_arquivo} não foi encontrado')
-        exit
+        exit()
     except Exception as e:
         print(e)
-        exit
+        exit()
 
 def separar_elementos(): # Colocar cada informação em cada variável
     global qnt_trilhas
@@ -64,6 +64,12 @@ def separar_elementos(): # Colocar cada informação em cada variável
     estado_inicial = mt[7]
     estados_finais_lista = mt[8]
 
+def verificar_palavra_esta_alfabeto_entrada():
+    for letra in palavra:
+        if letra not in alfabeto_entrada:
+            print(f'A letra {letra} da palavra de entrada {palavra} não está no alfabeto de entrada: {alfabeto_entrada}')
+            exit()
+
 def atribuir_numero_estado(): ## Atribuir um número para cada estado : Não trabalhar com strings por exemplo
     global estados
     global estados_lista
@@ -83,7 +89,7 @@ def verificar_estados(): ## Verificar se está atribuindo certo
     global estados
 
     for chave in estados:
-        print(f'Chave: {chave}: {estados[chave]}')
+        print(f'Estado: {chave}: {estados[chave]}')
 
 def colocar_transicoes_hash(): ## Colocando as transições em Hash com a chave sendo o estado atual
     global transicoes_lista
@@ -231,6 +237,7 @@ palavra = argumentos[2]
 mt = ler_maquina_turing(nome_arquivo)['mt']
 
 separar_elementos()
+verificar_palavra_esta_alfabeto_entrada()
 atribuir_numero_estado()
 
 # verificar_estados()
