@@ -1,16 +1,16 @@
 # Lembrar da palavra "" (lambda)
 
 import json
-import sys ## Ler linha de comando
+import sys # Ler linha de comando
 
 
-## Variáveis globais
+# Variáveis globais
 mt = {}
 
 trilhas = []
 qnt_trilhas = 0
 
-estados = {} ## chave : (id, isFinal) // Tupla
+estados = {} # estado : (id, isFinal) // Tupla
 estado_inicial = 0
 estados_finais_lista = []
 estados_lista = []
@@ -67,31 +67,25 @@ def separar_elementos(): # Colocar cada informação em cada variável
 def verificar_palavra_esta_alfabeto_entrada():
     for letra in palavra:
         if letra not in alfabeto_entrada:
-            print(f'A letra {letra} da palavra de entrada {palavra} não está no alfabeto de entrada: {alfabeto_entrada}')
+            print(f'A letra "{letra}" da palavra de entrada "{palavra}" não está no alfabeto de entrada "{alfabeto_entrada}"')
             exit()
 
-def atribuir_numero_estado(): ## Atribuir um número para cada estado : Não trabalhar com strings por exemplo
+def atribuir_numero_estado(): # Atribuir um número para cada estado (id) : Não trabalhar com strings por exemplo
     global estados
     global estados_lista
     global estados_finais_lista
 
     id = 1
 
-    for estado in estados_lista:
+    for estado in estados_lista: # O(n * m) -> O(n^2)
         if estado in estados_finais_lista:
-            estados.update({estado: (id, True)}) ## É Estado Final
+            estados.update({estado: (id, True)}) # É Estado Final
         else:
-            estados.update({estado: (id, False)}) ## Não é Estado Final
+            estados.update({estado: (id, False)}) # Não é Estado Final
         
         id += 1
 
-def verificar_estados(): ## Verificar se está atribuindo certo
-    global estados
-
-    for chave in estados:
-        print(f'Estado: {chave}: {estados[chave]}')
-
-def colocar_transicoes_hash(): ## Colocando as transições em Hash com a chave sendo o estado atual
+def colocar_transicoes_hash(): # Colocando as transições em Hash com a chave sendo o estado atual -> Pesquisa será O(1)
     global transicoes_lista
 
     for transicao in transicoes_lista:
@@ -101,14 +95,6 @@ def colocar_transicoes_hash(): ## Colocando as transições em Hash com a chave 
             transicoes[estado_atual] = [transicao[1:]]
         else:
             transicoes[estado_atual].append(transicao[1:])
-
-def verificar_transicoes(): ## Teste para verificar se está armazenando de forma correta
-    global transicoes
-
-    for chave in transicoes:
-        for valor in transicoes[chave]:
-            print(f'Estado {chave}: {valor}')
-        print()
         
 def fazer_trilhas():
     global palavra
@@ -118,10 +104,10 @@ def fazer_trilhas():
 
     VALOR = 1 # TODO: Adicionar 1 devido ao Lambda
 
-    palavra_lista = list(palavra) ## Lista de caracteres da palavra de entrada
-    palavra_lista.insert(0, simbolo_inicio) ## Coloca o símbolo de ínicio no primeiro índice
+    palavra_lista = list(palavra) # Lista de caracteres da palavra de entrada
+    palavra_lista.insert(0, simbolo_inicio) # Coloca o símbolo de ínicio no primeiro índice
 
-    # Adicionar muitos brancos
+    # Adicionar um branco à direita (Caso tenha 'lamba')
     palavra_lista.extend(simbolo_vazio for _ in range(VALOR))
 
     trilhas.append(palavra_lista)
@@ -129,48 +115,8 @@ def fazer_trilhas():
     if qnt_trilhas > 1:
         trilha_branco = [simbolo_vazio for _ in range(len(palavra_lista))] # Mesmo tamanho de palavra_lista
 
-        # Coloca trilhas em branco 'qnt de trilhas - 1' pois a primeira trilha é a entrada
+        # Coloca trilhas em branco 'qnt de trilhas - 1' vezes, pois a primeira trilha é a entrada
         trilhas.extend(trilha_branco for _ in range(qnt_trilhas - 1))
-     
-def verificar_trilhas(): ## Verificar se está montando certo
-    global trilhas
-
-    for trilha in trilhas:
-        print(trilha)
-
-def checar_transicao(estado, cabecote : int) -> list: # Caso retorne lista vazia, não há transição. Caso contrário, retorna transicao
-    global transicoes
-    global simbolo_inicio
-    global simbolo_vazio
-    global trilhas
-
-    transicoes_validas_lista = transicoes[estado] # Todas as transições de 'estado'
-
-    for transicao_valida in transicoes_validas_lista:
-        simbolos_leitura = transicao_valida[:qnt_trilhas]
-
-        possivel = True
-
-        for i in range(qnt_trilhas): # Todos devem dar certo
-            if trilhas[i][cabecote] != simbolos_leitura[i]:
-                possivel = False
-                break
-        
-        if possivel:
-            return transicao_valida
-
-    return None
-
-def isFinalState(estado) -> bool:
-    return estados[estado][1]
-
-def adicionar_branco_direita():
-    global trilhas
-    global qnt_trilhas
-    global simbolo_vazio
-
-    for i in range(qnt_trilhas):
-        trilhas[i].append(simbolo_vazio)
 
 def executar_maquina() -> bool: # Retornar se a palavra faz parte da linguagem ou não
     global estados
@@ -224,8 +170,61 @@ def executar_maquina() -> bool: # Retornar se a palavra faz parte da linguagem o
 
     return isFinalState(estado_atual)
 
+def checar_transicao(estado, cabecote : int) -> list: # Caso retorne lista vazia, não há transição. Caso contrário, retorna transicao
+    global transicoes
+    global simbolo_inicio
+    global simbolo_vazio
+    global trilhas
 
-argumentos = sys.argv ## Primeiro argumento é o nome do programa python3
+    transicoes_validas_lista = transicoes[estado] # Todas as transições de 'estado'
+
+    for transicao_valida in transicoes_validas_lista:
+        simbolos_leitura = transicao_valida[:qnt_trilhas]
+
+        possivel = True
+
+        for i in range(qnt_trilhas): # Todos devem dar certo
+            if trilhas[i][cabecote] != simbolos_leitura[i]:
+                possivel = False
+                break
+        
+        if possivel:
+            return transicao_valida
+
+    return None
+
+def adicionar_branco_direita(): # Ter quantos brancos o computador conseguir
+    global trilhas
+    global qnt_trilhas
+    global simbolo_vazio
+
+    for i in range(qnt_trilhas):
+        trilhas[i].append(simbolo_vazio)
+
+def isFinalState(estado) -> bool:
+    return estados[estado][1]
+
+def verificar_trilhas(): # PRINT: Verificar se está montando as trilhas corretamente
+    global trilhas
+
+    for trilha in trilhas:
+        print(trilha)
+
+def verificar_transicoes(): # PRINT: Verificar se está armazenando as transições de forma correta
+    global transicoes
+
+    for chave in transicoes:
+        for valor in transicoes[chave]: # Valor: transição do estado 'chave'
+            print(f'Estado {chave}: {valor}')
+        print()
+
+def verificar_estados(): # PRINT: Verificar se está atribuindo a cada estado seu 'id' e se é estado final corretamente
+    global estados
+
+    for estado in estados:
+        print(f'Estado: {estado}: {estados[estado]}')
+
+argumentos = sys.argv # Primeiro argumento é o nome do programa python3
 
 if len(argumentos) != 3:
     print("Usar: python3 TuringMachine.py [MT] [Word]")
