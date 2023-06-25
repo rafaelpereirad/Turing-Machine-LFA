@@ -11,12 +11,12 @@ trilhas = []
 qnt_trilhas = 0
 
 estados = {} # estado : (id, isFinal) // Tupla
-estado_inicial = 0
-estados_finais_lista = []
+estado_inicial = 0 # TODO: Verificar se o estado inicial está nos 'estados'
+estados_finais_lista = [] # TODO: Verificar se os 'estados finais' estão nos 'estados'
 estados_lista = []
 
-alfabeto_entrada = []
-alfabeto_fita = []
+alfabeto_entrada = [] # TODO: Verificar se o 'alfabeto de entrada' está no 'alfabeto da fita'
+alfabeto_fita = [] # TODO: Verificar se os 'símbolos de escrita' e de 'leitura' pertencem ao 'alfabeto da fita'
 
 simbolo_inicio = ""
 simbolo_vazio = ""
@@ -67,7 +67,7 @@ def separar_elementos(): # Colocar cada informação em cada variável
 def verificar_palavra_esta_alfabeto_entrada():
     for letra in palavra:
         if letra not in alfabeto_entrada:
-            print(f'A letra "{letra}" da palavra de entrada "{palavra}" não está no alfabeto de entrada "{alfabeto_entrada}"')
+            print(f'A letra "{letra}" da palavra de entrada "{palavra}" não está no alfabeto de entrada "{alfabeto_entrada}"') # TODO: printar 'Não' ou apenas o 'aviso'
             exit()
 
 def atribuir_numero_estado(): # Atribuir um número para cada estado (id) : Não trabalhar com strings por exemplo
@@ -95,6 +95,10 @@ def colocar_transicoes_hash(): # Colocando as transições em Hash com a chave s
             transicoes[estado_atual] = [transicao[1:]]
         else:
             transicoes[estado_atual].append(transicao[1:])
+    
+    for estado in estados_lista: # colocar vazio nos estados que não tem transições
+        if estado not in transicoes:
+            transicoes[estado] = []
         
 def fazer_trilhas():
     global palavra
@@ -102,7 +106,7 @@ def fazer_trilhas():
     global simbolo_inicio
     global simbolo_vazio
 
-    VALOR = 1 # TODO: Adicionar 1 devido ao Lambda
+    VALOR = 1 # Adicionar 1 devido ao Lambda
 
     palavra_lista = list(palavra) # Lista de caracteres da palavra de entrada
     palavra_lista.insert(0, simbolo_inicio) # Coloca o símbolo de ínicio no primeiro índice
@@ -140,7 +144,7 @@ def executar_maquina() -> bool: # Retornar se a palavra faz parte da linguagem o
     while True:
         transicao = checar_transicao(estado_atual, cabecote)
 
-        if transicao is None: # Não há transição
+        if transicao is None: # Não há transição definida
             break
 
         novo_estado = transicao[qnt_trilhas] # Pois indexa no 0
@@ -148,8 +152,8 @@ def executar_maquina() -> bool: # Retornar se a palavra faz parte da linguagem o
         mov = transicao[-1] # Ultimo elemento da lista
 
         # Vai para a esquerda e já está na primeira posição da trilha
-        if mov == '<' and cabecote == 0: # TODO: Retorna falso ou o estado atual?
-            break
+        if mov == '<' and cabecote == 0:
+            return False
         
         estado_atual = novo_estado
 
@@ -224,6 +228,7 @@ def verificar_estados(): # PRINT: Verificar se está atribuindo a cada estado se
     for estado in estados:
         print(f'Estado: {estado}: {estados[estado]}')
 
+
 argumentos = sys.argv # Primeiro argumento é o nome do programa python3
 
 if len(argumentos) != 3:
@@ -236,7 +241,7 @@ palavra = argumentos[2]
 mt = ler_maquina_turing(nome_arquivo)['mt']
 
 separar_elementos()
-verificar_palavra_esta_alfabeto_entrada()
+# verificar_palavra_esta_alfabeto_entrada() # Andrei disse que vai estar tudo em ordem
 atribuir_numero_estado()
 
 # verificar_estados()
