@@ -117,10 +117,8 @@ def fazer_trilhas():
     trilhas.append(palavra_lista)
 
     if qnt_trilhas > 1:
-        trilha_branco = [simbolo_vazio for _ in range(len(palavra_lista))] # Mesmo tamanho de palavra_lista
-
         # Coloca trilhas em branco 'qnt de trilhas - 1' vezes, pois a primeira trilha é a entrada
-        trilhas.extend(trilha_branco for _ in range(qnt_trilhas - 1))
+        trilhas.extend([simbolo_vazio for _ in range(len(palavra_lista))] for _ in range(qnt_trilhas - 1))
 
 def executar_maquina() -> bool: # Retornar se a palavra faz parte da linguagem ou não
     global estados
@@ -166,7 +164,7 @@ def executar_maquina() -> bool: # Retornar se a palavra faz parte da linguagem o
         if mov == '>': # Direita
             cabecote += 1
 
-            if cabecote > len(trilhas[0]): # Passou do tamanho da trilha, entao adicionar um branco já que é ilimitado à direita
+            if cabecote >= len(trilhas[0]): # Passou do tamanho da trilha, entao adicionar um branco já que é ilimitado à direita
                 adicionar_branco_direita()
 
         else:
