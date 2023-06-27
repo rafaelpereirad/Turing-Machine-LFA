@@ -1,0 +1,15 @@
+Nomes: 
+Pedro Vitor Melo Bitencourt (20213001540)
+Rafael Pereira Duarte (20213005146)
+
+
+Para executar o código, deve ter o python3 instalado. Após isso, basta executar o seguinte 
+comando no terminal (já aberto na pasta onde está o arquivo TuringMachine.py):
+
+python3 TuringMachine.py [MT] [Word]
+
+onde TuringMachine.py é o programa python desenvolvido, [MT] é o arquivo json, contendo
+a especificação da Máquina de Turing, e [Word] é a palavra que o usuário gostaria de 
+saber se a MT reconhece
+
+Não foi considerado casos que há algum símbolo na entrada que não pertence ao alfabeto da entrada/fita
